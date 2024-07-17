@@ -1,96 +1,112 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome'; // Asegúrate de tener instalada esta biblioteca
 import { themeColors } from '../theme'; // Importa los colores de tu tema
+import { useNavigation } from '@react-navigation/native';
 
-const CartScreen = () => {
+const CartScreen = ({ cartItems, setCartItems }) => {
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    calculateTotal();
+  }, [cartItems]);
+
+  const calculateTotal = () => {
+    const total = cartItems.reduce((acc, item) => acc + item.price * item.count, 0);
+    setTotal(total);
+  };
+
+  const handleRemoveItem = (index) => {
+    const updatedCartItems = cartItems.filter((_, i) => i !== index);
+    setCartItems(updatedCartItems);
+  };
+
+  const handleIncrement = (index) => {
+    const updatedCartItems = [...cartItems];
+    updatedCartItems[index].count += 1;
+    setCartItems(updatedCartItems);
+  };
+
+  const handleDecrement = (index) => {
+    const updatedCartItems = [...cartItems];
+    if (updatedCartItems[index].count > 1) {
+      updatedCartItems[index].count -= 1;
+      setCartItems(updatedCartItems);
+    }
+  };
+
+  const renderItem = ({ item, index }) => (
+    <CartItem 
+      item={item} 
+      index={index}
+      handleIncrement={() => handleIncrement(index)}
+      handleDecrement={() => handleDecrement(index)}
+      handleRemoveItem={() => handleRemoveItem(index)} 
+    />
+  );
+
+  const handleHomePress = () => {
+    navigation.navigate('Home');
+};
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Shopping Cart</Text>
       </View>
 
-      {/* Item 1 */}
-      <View style={styles.itemContainer}>
-        <Image source={require('../assets/images/background/beansBackground1.png')} style={styles.itemImage} />
-        <View style={styles.itemDetails}>
-          <Text style={styles.itemName}>Gucci Midi Dress</Text>
-          <Text style={styles.itemPrice}>$2,500</Text>
+      <FlatList
+        data={cartItems}
+        renderItem={renderItem}
+        keyExtractor={(item, index) => index.toString()}
+      />
+
+      <CartTotal total={total} />
+    </View>
+  );
+};
+
+const CartItem = ({ item, handleIncrement, handleDecrement, handleRemoveItem }) => {
+  return (
+    <View style={styles.itemContainer}>
+      <Image source={item.image} style={styles.itemImage} />
+      <View style={styles.itemDetails}>
+        <Text style={styles.itemName}>{item.name}</Text>
+        <Text style={styles.itemPrice}>${item.price}</Text>
+      </View>
+      <View style={styles.quantityContainer}>
+        <TouchableOpacity style={styles.quantityButton} onPress={handleDecrement}>
+          <Text style={styles.quantityButtonText}>-</Text>
+        </TouchableOpacity>
+        <View style={styles.quantityInput}>
+          <Text style={styles.quantityText}>{item.count}</Text>
         </View>
-        <View style={styles.quantityContainer}>
-          <TouchableOpacity style={styles.quantityButton}>
-            <Text style={styles.quantityButtonText}>-</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.quantityInput}>
-            <Text style={styles.quantityText}>1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.quantityButton}>
-            <Text style={styles.quantityButtonText}>+</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.deleteButton}>
-          <Icon name="trash" size={24} color={themeColors.text} />
+        <TouchableOpacity style={styles.quantityButton} onPress={handleIncrement}>
+          <Text style={styles.quantityButtonText}>+</Text>
         </TouchableOpacity>
       </View>
+      <TouchableOpacity style={styles.deleteButton} onPress={handleRemoveItem}>
+        <Icon name="trash" size={24} color={themeColors.text} />
+      </TouchableOpacity>
+    </View>
+  );
+};
 
-      {/* Item 2 */}
-      <View style={styles.itemContainer}>
-        <Image source={require('../assets/images/background/beansBackground1.png')} style={styles.itemImage} />
-        <View style={styles.itemDetails}>
-          <Text style={styles.itemName}>Gucci Silk Dress</Text>
-          <Text style={styles.itemPrice}>$3,000</Text>
-        </View>
-        <View style={styles.quantityContainer}>
-          <TouchableOpacity style={styles.quantityButton}>
-            <Text style={styles.quantityButtonText}>-</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.quantityInput}>
-            <Text style={styles.quantityText}>1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.quantityButton}>
-            <Text style={styles.quantityButtonText}>+</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.deleteButton}>
-          <Icon name="trash" size={24} color={themeColors.text} />
-        </TouchableOpacity>
-      </View>
+const CartTotal = ({ total }) => {
 
-      {/* Item 3 */}
-      <View style={styles.itemContainer}>
-        <Image source={require('../assets/images/background/beansBackground2.png')} style={styles.itemImage} />
-        <View style={styles.itemDetails}>
-          <Text style={styles.itemName}>Givenchy Silk Dress</Text>
-          <Text style={styles.itemPrice}>$2,800</Text>
-        </View>
-        <View style={styles.quantityContainer}>
-          <TouchableOpacity style={styles.quantityButton}>
-            <Text style={styles.quantityButtonText}>-</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.quantityInput}>
-            <Text style={styles.quantityText}>1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.quantityButton}>
-            <Text style={styles.quantityButtonText}>+</Text>
-          </TouchableOpacity>
-        </View>
-        <TouchableOpacity style={styles.deleteButton}>
-          <Icon name="trash" size={24} color={themeColors.text} />
-        </TouchableOpacity>
-      </View>
+  const navigation = useNavigation();
+    const handlePagoPress = () => {
+        navigation.navigate('Pago');
+    };
 
-      {/* Total */}
+  return (
+    <View style={styles.checkoutButtonContainer}>
       <View style={styles.subtotalContainer}>
         <Text style={styles.subtotalText}>Total a pagar</Text>
-        <Text style={styles.subtotalAmount}>$00.00</Text>
+        <Text style={styles.subtotalAmount}>${total.toFixed(2)}</Text>
       </View>
-
-      {/* Proceed to Checkout */}
-      <View style={styles.checkoutButtonContainer}>
-        <TouchableOpacity style={styles.checkoutButton}>
-          <Text style={styles.checkoutButtonText}>Realizar Pedido</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.checkoutButton} onPress={handlePagoPress}>
+        <Text style={styles.checkoutButtonText}>Realizar Pedido</Text>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -10,6 +10,7 @@ export default function SettingsScreen() {
     const handleHomePress = () => {
         navigation.navigate('Home');
     };
+
     const [isNightMode, setIsNightMode] = React.useState(false);
     const [isHighContrast, setIsHighContrast] = React.useState(false);
 

@@ -52,7 +52,7 @@ const WelcomeScreen = ({ navigation }) => {
           UCEspigal
         </Animated.Text>
         <Animated.Text className="font-medium text-white tracking-widest text-lg" style={{ marginBottom: 20, opacity: fadeValue }}>
-          Panaderia/Cafeteria
+        Cada mordida, una sonrisa
         </Animated.Text>
       </View>
     </View>

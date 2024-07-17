@@ -1,20 +1,41 @@
-import { View, Text, TouchableOpacity, Image, Dimensions, Platform } from 'react-native'
-import React, { useState } from 'react'
-import { useNavigation } from '@react-navigation/native'
+import { View, Text, TouchableOpacity, Image, Dimensions, Platform } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ArrowLeftCircleIcon, MinusIcon, PlusIcon } from 'react-native-heroicons/outline';
 import { HeartIcon, StarIcon } from 'react-native-heroicons/solid';
 import { themeColors } from '../theme';
 import { ShoppingBag } from 'react-native-feather';
-const {width, height} = Dimensions.get('window');
-const ios = Platform.OS == 'ios';
+const ios = Platform.OS === 'ios';
 
 
-export default function FavouriteScreen(props) {
-  const item = props.route.params;
-  const [size, setSize] = useState('small');
+export default function ProductScreen({ route, addToCart }) {
+  const item = route.params;
+  const [count, setCount] = useState(1);
   const navigation = useNavigation();
+
+  const handleIncrement = () => {
+    setCount(count + 1);
+  };
+
+  const handleDecrement = () => {
+    if (count > 1) {
+      setCount(count - 1);
+    }
+  };
+
+
+  const handleAddToCart = () => {
+    if (addToCart) {
+      addToCart({ ...item, count });
+      navigation.navigate('Cart');
+    }
+    if (count > 1) {
+      setCount(1);
+    }
+  };
+
   return (
     <View className="flex-1">
       <StatusBar style="light" />
@@ -74,16 +95,15 @@ export default function FavouriteScreen(props) {
                 {/* <Text className="text-base text-black font-semibold"> {item.volume}</Text> */}
               </View>
               <View 
-                className="flex-row items-center space-x-4 border-gray-500 border rounded-full p-1 px-4">
-                <TouchableOpacity>
+              className="flex-row items-center space-x-4 border-gray-500 border rounded-full p-1 px-4">
+                <TouchableOpacity onPress={handleDecrement}>
                   <MinusIcon size="20" strokeWidth={3} color={themeColors.text} />
                 </TouchableOpacity>
-                <Text style={{color: themeColors.text}} className="font-extrabold text-lg">1</Text>
-                <TouchableOpacity>
+                <Text style={{color: themeColors.text}} className="font-extrabold text-lg">{count}</Text>
+                <TouchableOpacity onPress={handleIncrement}>
                   <PlusIcon size="20" strokeWidth={3} color={themeColors.text} />
                 </TouchableOpacity>
               </View>
-              
           </View>
 
           {/* buy now button */}
@@ -91,15 +111,13 @@ export default function FavouriteScreen(props) {
             <TouchableOpacity className="p-4 rounded-full border border-gray-400">
               <ShoppingBag size="30" color="gray" />
             </TouchableOpacity>
-            <TouchableOpacity 
+            <TouchableOpacity onPress={handleAddToCart}
               style={{backgroundColor: themeColors.bgLight}} 
               className="p-4 rounded-full flex-1 ml-4">
               <Text className="text-center text-white text-base font-semibold">Agregar al carrito</Text>
             </TouchableOpacity>
           </View>
         </View>
-        
-      
     </View>
   )
 }
