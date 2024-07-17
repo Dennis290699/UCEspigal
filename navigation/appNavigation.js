@@ -9,6 +9,7 @@ import CartScreen from '../screens/CartScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MetodoPagoScreen from '../screens/MetodoPagoScreen';
 import DatosClScreen from '../screens/DatosClScreen';
+import DatosTarjetaScreen from '../screens/DatosTarjetaScreen';
 import FacturaScreen from '../screens/FacturaScreen';
 import { Dimensions, LogBox, Platform, Text, View } from 'react-native';
 import { themeColors } from '../theme';
@@ -46,6 +47,7 @@ export default function AppNavigation() {
         </Stack.Screen>
         <Stack.Screen name="Pago" component={MetodoPagoScreen} />
         <Stack.Screen name="DatosCliente" component={DatosClScreen} />
+        <Stack.Screen name="DatosTarjeta" component={DatosTarjetaScreen} />
         <Stack.Screen name="Factura" component={FacturaScreen} />
       </Stack.Navigator>
     </NavigationContainer>

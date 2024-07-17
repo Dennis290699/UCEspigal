@@ -24,7 +24,7 @@ const MetodoPagoScreen = () => {
     if (selectedPaymentMethod === 'efectivo') {
       navigation.navigate('DatosCliente');
     } else if (selectedPaymentMethod === 'tarjeta') {
-      navigation.navigate('DatosClienteTarjeta');
+      navigation.navigate('DatosTarjeta');
     } else {
       // Manejar el caso en el que no se ha seleccionado ningún método
       alert('Por favor, seleccione un método de pago.');
