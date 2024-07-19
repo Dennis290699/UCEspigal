@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, Image, Dimensions, Platform } from 'react-native';
-import React, { useState, useContext } from 'react';
+import { View, Text, TouchableOpacity, Image, Platform, Alert } from 'react-native';
+import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,11 +9,16 @@ import { themeColors } from '../theme';
 import { ShoppingBag } from 'react-native-feather';
 const ios = Platform.OS === 'ios';
 
-
 export default function ProductScreen({ route, addToCart }) {
   const item = route.params;
   const [count, setCount] = useState(1);
+  const [isAdded, setIsAdded] = useState(false); // Estado para manejar la desactivación del botón
+  const [cartItems, setCartItems] = useState(0); // Estado para manejar el icono del carrito
   const navigation = useNavigation();
+
+  const handleStorePress = () => {
+    navigation.navigate('Cart');
+  };
 
   const handleIncrement = () => {
     setCount(count + 1);
@@ -25,14 +30,14 @@ export default function ProductScreen({ route, addToCart }) {
     }
   };
 
-
   const handleAddToCart = () => {
-    if (addToCart) {
-      addToCart({ ...item, count });
-      navigation.navigate('Cart');
-    }
-    if (count > 1) {
-      setCount(1);
+    if (!isAdded) {
+      if (addToCart) {
+        addToCart({ ...item, count });
+      }
+      setIsAdded(true);
+      setCartItems(cartItems + count); // Incrementar la cantidad de items en el carrito
+      Alert.alert('Producto agregado', 'El producto ha sido agregado al carrito.');
     }
   };
 
@@ -79,7 +84,6 @@ export default function ProductScreen({ route, addToCart }) {
         </View>
 
         <View className="px-4 space-y-4">
-          {/* <Text style={{color: themeColors.text}} className="text-lg font-bold">Detalle</Text> */}
           <Text style={{color: themeColors.text, fontSize: 18}} className="text-gray-600">
             {item.desc}
           </Text>
@@ -92,7 +96,6 @@ export default function ProductScreen({ route, addToCart }) {
                 <Text style={{color: themeColors.text, fontSize: 20}} className="text-base text-gray-700 font-semibold opacity-60">
                   Cantidad 
                 </Text>
-                {/* <Text className="text-base text-black font-semibold"> {item.volume}</Text> */}
               </View>
               <View 
               className="flex-row items-center space-x-4 border-gray-500 border rounded-full p-1 px-4">
@@ -106,15 +109,16 @@ export default function ProductScreen({ route, addToCart }) {
               </View>
           </View>
 
-          {/* buy now button */}
           <View className="flex-row justify-between px-4">
-            <TouchableOpacity className="p-4 rounded-full border border-gray-400">
-              <ShoppingBag size="30" color="gray" />
+            <TouchableOpacity className="p-4 rounded-full border border-gray-400" onPress={handleStorePress}>
+              <ShoppingBag size="30" color={cartItems > 0 ? "green" : "gray"} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleAddToCart}
-              style={{backgroundColor: themeColors.bgLight}} 
+            <TouchableOpacity onPress={handleAddToCart} disabled={isAdded}
+              style={{backgroundColor: isAdded ? "gray" : themeColors.bgLight}} 
               className="p-4 rounded-full flex-1 ml-4">
-              <Text className="text-center text-white text-base font-semibold">Agregar al carrito</Text>
+              <Text className="text-center text-white text-base font-semibold">
+                {isAdded ? "Producto agregado" : "Agregar al carrito"}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

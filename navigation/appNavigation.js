@@ -19,7 +19,7 @@ import { HomeIcon as HomeSolid, HeartIcon as HeartSolid, ShoppingBagIcon as BagS
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-const ios = Platform.OS == 'ios';
+const ios = Platform.OS === 'ios';
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
@@ -36,7 +36,7 @@ export default function AppNavigation() {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Welcome" component={WelcomeScreen} />
         <Stack.Screen name="Home">
-          {(props) => <HomeTabs {...props} cartItems={cartItems} />}
+          {(props) => <HomeTabs {...props} cartItems={cartItems} setCartItems={setCartItems} />}
         </Stack.Screen>
         <Stack.Screen name="Settings" component={SettingsScreen} />
         <Stack.Screen name="Product">
@@ -54,7 +54,7 @@ export default function AppNavigation() {
   );
 }
 
-function HomeTabs({ cartItems }) {
+function HomeTabs({ cartItems, setCartItems }) {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -74,10 +74,14 @@ function HomeTabs({ cartItems }) {
         },
       })}
     >
-      <Tab.Screen name="home" component={HomeScreen} />
-      <Tab.Screen name="AboutUs" component={AboutUsScreen} />
+      <Tab.Screen name="home">
+        {(props) => <HomeScreen {...props} />}
+      </Tab.Screen>
+      <Tab.Screen name="AboutUs">
+        {(props) => <AboutUsScreen {...props} />}
+      </Tab.Screen>
       <Tab.Screen name="Cart">
-        {(props) => <CartScreen {...props} cartItems={cartItems} />}
+        {(props) => <CartScreen {...props} cartItems={cartItems} setCartItems={setCartItems} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

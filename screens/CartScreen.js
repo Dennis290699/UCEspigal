@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome'; // Asegúrate de tener instalada esta biblioteca
-import { themeColors } from '../theme'; // Importa los colores de tu tema
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
+import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 
 const CartScreen = ({ cartItems, setCartItems }) => {
   const [total, setTotal] = useState(0);
+  const navigation = useNavigation();
 
   useEffect(() => {
     calculateTotal();
@@ -38,20 +40,23 @@ const CartScreen = ({ cartItems, setCartItems }) => {
   const renderItem = ({ item, index }) => (
     <CartItem 
       item={item} 
-      index={index}
       handleIncrement={() => handleIncrement(index)}
       handleDecrement={() => handleDecrement(index)}
       handleRemoveItem={() => handleRemoveItem(index)} 
     />
   );
 
-  const handleHomePress = () => {
+  const handleBackPress = () => {
     navigation.navigate('Home');
-};
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Shopping Cart</Text>
+        <TouchableOpacity style={styles.iconContainer} onPress={handleBackPress}>
+          <ArrowLeftIcon style={styles.homeIcon} size={27} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Carrito</Text>
       </View>
 
       <FlatList
@@ -92,11 +97,11 @@ const CartItem = ({ item, handleIncrement, handleDecrement, handleRemoveItem }) 
 };
 
 const CartTotal = ({ total }) => {
-
   const navigation = useNavigation();
-    const handlePagoPress = () => {
-        navigation.navigate('Pago');
-    };
+
+  const handlePagoPress = () => {
+    navigation.navigate('Pago');
+  };
 
   return (
     <View style={styles.checkoutButtonContainer}>
@@ -111,22 +116,27 @@ const CartTotal = ({ total }) => {
   );
 };
 
-const styles = {
+const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flexGrow: 1,
     backgroundColor: '#f8fafc',
-    paddingTop: 20,
+    padding: 20,
   },
   header: {
-    paddingHorizontal: 16,
-    paddingBottom: 10,
+    flexDirection: 'row',
     justifyContent: 'center',
-    height: 60,
+    alignItems: 'center',
+    paddingVertical: 20,
+    position: 'relative',
+  },
+  iconContainer: {
+    position: 'absolute',
+    left: 10,
   },
   headerText: {
-    color: themeColors.text,
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
+    color: themeColors.text,
   },
   itemContainer: {
     flexDirection: 'row',
@@ -137,7 +147,7 @@ const styles = {
     backgroundColor: themeColors.surface,
     borderRadius: 10,
     marginBottom: 12,
-    position: 'relative', // Añadido para la posición absoluta del botón de eliminar
+    position: 'relative',
   },
   itemImage: {
     width: 70,
@@ -222,8 +232,8 @@ const styles = {
     alignItems: 'center',
   },
   checkoutButton: {
-    width: '80%', // Ajusta el ancho del botón
-    paddingVertical: 15, // Ajusta la altura del botón
+    width: '80%',
+    paddingVertical: 15,
     backgroundColor: themeColors.primary,
     borderRadius: 15,
     justifyContent: 'center',
@@ -235,6 +245,6 @@ const styles = {
     fontSize: 18,
     fontWeight: 'bold',
   },
-};
+});
 
 export default CartScreen;

@@ -2,19 +2,25 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { themeColors } from '../theme'; // Importa los colores de tu tema
+import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 
 const DatosTarjetaScreen = () => {
   const navigation = useNavigation();
 
+  const handleBackPress = () => {
+    navigation.navigate('Pago');
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-            <Icon name="arrow-left" size={24} color="#1C160C" />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Checkout</Text>
-        </View>
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.iconContainer} onPress={handleBackPress}>
+          <ArrowLeftIcon style={styles.homeIcon} size={27} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerText}>Datos cliente</Text>
+      </View>
 
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Credit or Debit Card</Text>
@@ -82,24 +88,24 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     justifyContent: 'space-between',
+    backgroundColor: '#f8fafc',
+    padding: 20,
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
-    backgroundColor: '#FFFFFF',
+    paddingVertical: 20,
+    position: 'relative',
   },
-  backButton: {
-    padding: 10,
+  iconContainer: {
+    position: 'absolute',
+    left: 10,
   },
-  headerTitle: {
-    fontSize: 18,
+  headerText: {
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#1C160C',
-    flex: 1,
-    textAlign: 'center',
-    marginRight: 30,
+    color: themeColors.text,
   },
   inputContainer: {
     maxWidth: 480,

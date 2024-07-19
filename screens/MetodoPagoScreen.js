@@ -105,13 +105,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#0d141c',
+    color: themeColors.primary,
     textAlign: 'center',
     paddingVertical: 15,
   },
   description: {
     fontSize: 16,
-    color: '#0d141c',
+    color: themeColors.text,
     textAlign: 'center',
     paddingHorizontal: 16,
     paddingBottom: 15,
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#cedbe8',
+    borderColor: themeColors.accent,
     marginBottom: 10,
   },
   radioOuter: {
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     borderWidth: 2,
-    borderColor: '#cedbe8',
+    borderColor: themeColors.accent,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -147,12 +147,12 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: '#2589f4',
+    backgroundColor: themeColors.primary,
   },
   radioLabel: {
     marginLeft: 10,
     fontSize: 16,
-    color: '#0d141c',
+    color: themeColors.text,
   },
   footer: {
     paddingHorizontal: 16,
@@ -161,13 +161,13 @@ const styles = StyleSheet.create({
   button: {
     height: 48,
     borderRadius: 10,
-    backgroundColor: '#2589f4',
+    backgroundColor: themeColors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonText: {
     fontSize: 16,
-    color: '#ffffff',
+    color: themeColors.onPrimary,
     fontWeight: 'bold',
   },
 });
