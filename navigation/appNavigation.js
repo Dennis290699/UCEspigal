@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { CartProvider } from '../context/CartContext';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import HomeScreen from '../screens/HomeScreen';
 import AboutUsScreen from '../screens/AboutUsScreen';
@@ -11,7 +12,9 @@ import MetodoPagoScreen from '../screens/MetodoPagoScreen';
 import DatosClScreen from '../screens/DatosClScreen';
 import DatosTarjetaScreen from '../screens/DatosTarjetaScreen';
 import FacturaScreen from '../screens/FacturaScreen';
-import { Dimensions, LogBox, Platform, Text, View } from 'react-native';
+import FacturaTarjetaScreen from '../screens/FacturaTarjetaScreen';
+
+import { Dimensions, Platform, Text, View } from 'react-native';
 import { themeColors } from '../theme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeIcon as HomeOutline, HeartIcon as HeartOutline, ShoppingBagIcon as BagOutline, UserGroupIcon as UserGroup } from 'react-native-heroicons/outline';
@@ -20,41 +23,30 @@ import { HomeIcon as HomeSolid, HeartIcon as HeartSolid, ShoppingBagIcon as BagS
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const ios = Platform.OS === 'ios';
-LogBox.ignoreLogs([
-  'Non-serializable values were found in the navigation state',
-]);
 
 export default function AppNavigation() {
-  const [cartItems, setCartItems] = useState([]);
-
-  const addToCart = (item) => {
-    setCartItems([...cartItems, item]);
-  };
-
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="Welcome" component={WelcomeScreen} />
-        <Stack.Screen name="Home">
-          {(props) => <HomeTabs {...props} cartItems={cartItems} setCartItems={setCartItems} />}
-        </Stack.Screen>
-        <Stack.Screen name="Settings" component={SettingsScreen} />
-        <Stack.Screen name="Product">
-          {(props) => <ProductScreen {...props} addToCart={addToCart} />}
-        </Stack.Screen>
-        <Stack.Screen name="Cart">
-          {(props) => <CartScreen {...props} cartItems={cartItems} setCartItems={setCartItems} />}
-        </Stack.Screen>
-        <Stack.Screen name="Pago" component={MetodoPagoScreen} />
-        <Stack.Screen name="DatosCliente" component={DatosClScreen} />
-        <Stack.Screen name="DatosTarjeta" component={DatosTarjetaScreen} />
-        <Stack.Screen name="Factura" component={FacturaScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <CartProvider>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="Home" component={HomeTabs} />
+          <Stack.Screen name="Settings" component={SettingsScreen} />
+          <Stack.Screen name="Product" component={ProductScreen} />
+          <Stack.Screen name="Cart" component={CartScreen} />
+          <Stack.Screen name="Pago" component={MetodoPagoScreen} />
+          <Stack.Screen name="DatosCliente" component={DatosClScreen} />
+          <Stack.Screen name="DatosTarjeta" component={DatosTarjetaScreen} />
+          <Stack.Screen name="Factura" component={FacturaScreen} />
+          <Stack.Screen name="Facturatarjeta" component={FacturaTarjetaScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </CartProvider>
   );
 }
 
-function HomeTabs({ cartItems, setCartItems }) {
+function HomeTabs() {
+  
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -74,15 +66,9 @@ function HomeTabs({ cartItems, setCartItems }) {
         },
       })}
     >
-      <Tab.Screen name="home">
-        {(props) => <HomeScreen {...props} />}
-      </Tab.Screen>
-      <Tab.Screen name="AboutUs">
-        {(props) => <AboutUsScreen {...props} />}
-      </Tab.Screen>
-      <Tab.Screen name="Cart">
-        {(props) => <CartScreen {...props} cartItems={cartItems} setCartItems={setCartItems} />}
-      </Tab.Screen>
+      <Tab.Screen name="home" component={HomeScreen} />
+      <Tab.Screen name="AboutUs" component={AboutUsScreen} />
+      <Tab.Screen name="Cart" component={CartScreen} />
     </Tab.Navigator>
   );
 }

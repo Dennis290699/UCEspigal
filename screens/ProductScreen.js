@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image, Platform, Alert } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,13 +7,15 @@ import { ArrowLeftCircleIcon, MinusIcon, PlusIcon } from 'react-native-heroicons
 import { HeartIcon, StarIcon } from 'react-native-heroicons/solid';
 import { themeColors } from '../theme';
 import { ShoppingBag } from 'react-native-feather';
+import { CartContext } from '../context/CartContext'; // Importar el contexto
+
 const ios = Platform.OS === 'ios';
 
-export default function ProductScreen({ route, addToCart }) {
+export default function ProductScreen({ route }) {
   const item = route.params;
   const [count, setCount] = useState(1);
-  const [isAdded, setIsAdded] = useState(false); // Estado para manejar la desactivación del botón
-  const [cartItems, setCartItems] = useState(0); // Estado para manejar el icono del carrito
+  const [isAdded, setIsAdded] = useState(false);
+  const { addToCart, cart } = useContext(CartContext); // Usar el contexto
   const navigation = useNavigation();
 
   const handleStorePress = () => {
@@ -32,11 +34,8 @@ export default function ProductScreen({ route, addToCart }) {
 
   const handleAddToCart = () => {
     if (!isAdded) {
-      if (addToCart) {
-        addToCart({ ...item, count });
-      }
+      addToCart({ ...item, count });
       setIsAdded(true);
-      setCartItems(cartItems + count); // Incrementar la cantidad de items en el carrito
       Alert.alert('Producto agregado', 'El producto ha sido agregado al carrito.');
     }
   };
@@ -111,7 +110,7 @@ export default function ProductScreen({ route, addToCart }) {
 
           <View className="flex-row justify-between px-4">
             <TouchableOpacity className="p-4 rounded-full border border-gray-400" onPress={handleStorePress}>
-              <ShoppingBag size="30" color={cartItems > 0 ? "green" : "gray"} />
+              <ShoppingBag size="30" color={cart.length > 0 ? "green" : "gray"} />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleAddToCart} disabled={isAdded}
               style={{backgroundColor: isAdded ? "gray" : themeColors.bgLight}} 

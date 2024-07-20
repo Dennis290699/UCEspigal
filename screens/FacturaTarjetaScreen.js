@@ -65,24 +65,12 @@ const FacturaScreen = () => {
         <Text style={styles.detailsTitle}>Datos Cliente</Text>
         <View style={styles.detailSection}>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Número de Cédula: </Text>
+            <Text style={styles.detailLabel}>Número de Tarjeta: </Text>
             <Text style={styles.detailValue}>{clientData?.cedula || 'N/A'}</Text>
           </View>
           <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Nombre y Apellido: </Text>
+            <Text style={styles.detailLabel}>Nombre del titular: </Text>
             <Text style={styles.detailValue}>{clientData?.nombre || 'N/A'} {clientData?.apellido || 'N/A'}</Text>
-          </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Correo: </Text>
-            <Text style={styles.detailValue}>{clientData?.correo || 'N/A'}</Text>
-          </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Domicilio: </Text>
-            <Text style={styles.detailValue}>{clientData?.domicilio || 'N/A'}</Text>
-          </View>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>Número de Teléfono: </Text>
-            <Text style={styles.detailValue}>{clientData?.telefono || 'N/A'}</Text>
           </View>
         </View>
 

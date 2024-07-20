@@ -1,15 +1,18 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { themeColors } from '../theme'; // Importa los colores de tu tema
-import { ArrowLeftIcon } from 'react-native-heroicons/outline';
+import { ArrowLeftIcon, CreditCardIcon, CalendarDaysIcon, LockClosedIcon, UserCircleIcon } from 'react-native-heroicons/outline';
 
 const DatosTarjetaScreen = () => {
   const navigation = useNavigation();
 
   const handleBackPress = () => {
     navigation.navigate('Pago');
+  };
+
+  const handleFacturaTarjetaPress = () => {
+    navigation.navigate('Facturatarjeta');
   };
 
   return (
@@ -25,7 +28,7 @@ const DatosTarjetaScreen = () => {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Credit or Debit Card</Text>
           <View style={styles.inputWrapper}>
-            <Icon name="credit-card" size={20} color="#A18249" style={styles.icon} />
+            <CreditCardIcon name="credit-card" size={20} color="#A18249" style={styles.icon} />
             <TextInput
               placeholder="Card number"
               style={styles.input}
@@ -38,7 +41,7 @@ const DatosTarjetaScreen = () => {
           <View style={styles.inputContainerHalf}>
             <Text style={styles.label}>MM/YY</Text>
             <View style={styles.inputWrapper}>
-              <Icon name="calendar" size={20} color="#A18249" style={styles.icon} />
+              <CalendarDaysIcon name="calendar" size={20} color="#A18249" style={styles.icon} />
               <TextInput
                 placeholder="MM/YY"
                 style={styles.input}
@@ -49,7 +52,7 @@ const DatosTarjetaScreen = () => {
           <View style={styles.inputContainerHalf}>
             <Text style={styles.label}>CVC</Text>
             <View style={styles.inputWrapper}>
-              <Icon name="lock" size={20} color="#A18249" style={styles.icon} />
+              <LockClosedIcon name="lock" size={20} color="#A18249" style={styles.icon} />
               <TextInput
                 placeholder="CVC"
                 style={styles.input}
@@ -62,7 +65,7 @@ const DatosTarjetaScreen = () => {
         <View style={styles.inputContainer}>
           <Text style={styles.label}>Name on card</Text>
           <View style={styles.inputWrapper}>
-            <Icon name="user" size={20} color="#A18249" style={styles.icon} />
+            <UserCircleIcon name="user" size={20} color="#A18249" style={styles.icon} />
             <TextInput
               placeholder="Name on card"
               style={styles.input}
@@ -71,8 +74,8 @@ const DatosTarjetaScreen = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.addButton}>
-            <Text style={styles.addButtonText}>Add payment method</Text>
+          <TouchableOpacity style={styles.addButton} onPress={handleFacturaTarjetaPress}>
+            <Text style={styles.addButtonText}>Confirmar Pago</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -155,7 +158,7 @@ const styles = StyleSheet.create({
     maxWidth: 480,
     height: 48,
     borderRadius: 24,
-    backgroundColor: '#019863',
+    backgroundColor: themeColors.primary,
     alignItems: 'center',
     justifyContent: 'center',
   },

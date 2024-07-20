@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
-import { ArrowLeftIcon } from 'react-native-heroicons/outline';
+import { ArrowLeftIcon, TrashIcon  } from 'react-native-heroicons/outline';
+import { CartContext } from '../context/CartContext'; // Importar el contexto
 
-const CartScreen = ({ cartItems, setCartItems }) => {
+const CartScreen = () => {
+  const { cart, removeFromCart, updateItemQuantity } = useContext(CartContext);
   const [total, setTotal] = useState(0);
   const navigation = useNavigation();
 
   useEffect(() => {
     calculateTotal();
-  }, [cartItems]);
+  }, [cart]);
 
   const calculateTotal = () => {
-    const total = cartItems.reduce((acc, item) => acc + item.price * item.count, 0);
+    const total = cart.reduce((acc, item) => acc + item.price * item.count, 0);
     setTotal(total);
   };
 
   const handleRemoveItem = (index) => {
-    const updatedCartItems = cartItems.filter((_, i) => i !== index);
-    setCartItems(updatedCartItems);
+    removeFromCart(index);
   };
 
   const handleIncrement = (index) => {
-    const updatedCartItems = [...cartItems];
-    updatedCartItems[index].count += 1;
-    setCartItems(updatedCartItems);
+    updateItemQuantity(index, cart[index].count + 1);
   };
 
   const handleDecrement = (index) => {
-    const updatedCartItems = [...cartItems];
-    if (updatedCartItems[index].count > 1) {
-      updatedCartItems[index].count -= 1;
-      setCartItems(updatedCartItems);
+    if (cart[index].count > 1) {
+      updateItemQuantity(index, cart[index].count - 1);
     }
+  };
+
+  const handleBackPress = () => {
+    navigation.navigate('Home');
   };
 
   const renderItem = ({ item, index }) => (
@@ -46,10 +46,6 @@ const CartScreen = ({ cartItems, setCartItems }) => {
     />
   );
 
-  const handleBackPress = () => {
-    navigation.navigate('Home');
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -60,7 +56,7 @@ const CartScreen = ({ cartItems, setCartItems }) => {
       </View>
 
       <FlatList
-        data={cartItems}
+        data={cart}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -90,7 +86,8 @@ const CartItem = ({ item, handleIncrement, handleDecrement, handleRemoveItem }) 
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.deleteButton} onPress={handleRemoveItem}>
-        <Icon name="trash" size={24} color={themeColors.text} />
+        <TrashIcon style={styles.deleteButton} color={themeColors.text} size={16}/>
+
       </TouchableOpacity>
     </View>
   );
