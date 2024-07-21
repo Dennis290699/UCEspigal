@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { themeColors } from '../theme'; // Importa los colores de tu tema
@@ -8,6 +8,14 @@ import { ConsumerCardContext } from '../context/ConsumerCardContext'; // Importa
 const DatosTarjetaScreen = () => {
   const navigation = useNavigation();
   const { cardData, setCardData } = useContext(ConsumerCardContext);
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
+  useEffect(() => {
+    // Verifica si todos los campos están llenos
+    const { cardNumber, expirationDate, cvc, cardHolderName } = cardData;
+    const isFilled = cardNumber && expirationDate && cvc && cardHolderName;
+    setIsButtonEnabled(isFilled);
+  }, [cardData]);
 
   const handleBackPress = () => {
     navigation.navigate('Pago');
@@ -15,6 +23,18 @@ const DatosTarjetaScreen = () => {
 
   const handleFacturaTarjetaPress = () => {
     navigation.navigate('Facturatarjeta');
+  };
+
+  // Función para formatear el texto en el campo MM/YY
+  const formatExpirationDate = (text) => {
+    // Elimina caracteres no numéricos
+    const cleaned = text.replace(/\D/g, '');
+
+    // Agrega el formato MM/YY
+    if (cleaned.length <= 2) {
+      return cleaned;
+    }
+    return `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`;
   };
 
   return (
@@ -35,6 +55,7 @@ const DatosTarjetaScreen = () => {
               placeholder="Número de tarjeta"
               style={styles.input}
               keyboardType="numeric"
+              maxLength={16}
               value={cardData.cardNumber}
               onChangeText={(text) => setCardData({ ...cardData, cardNumber: text })}
             />
@@ -50,7 +71,8 @@ const DatosTarjetaScreen = () => {
                 placeholder="MM/YY"
                 style={styles.input}
                 keyboardType="numeric"
-                value={cardData.expirationDate}
+                maxLength={5}
+                value={formatExpirationDate(cardData.expirationDate)}
                 onChangeText={(text) => setCardData({ ...cardData, expirationDate: text })}
               />
             </View>
@@ -63,6 +85,7 @@ const DatosTarjetaScreen = () => {
                 placeholder="CVC"
                 style={styles.input}
                 keyboardType="numeric"
+                maxLength={4}
                 value={cardData.cvc}
                 onChangeText={(text) => setCardData({ ...cardData, cvc: text })}
               />
@@ -84,7 +107,11 @@ const DatosTarjetaScreen = () => {
         </View>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.addButton} onPress={handleFacturaTarjetaPress}>
+          <TouchableOpacity
+            style={[styles.addButton, { backgroundColor: isButtonEnabled ? themeColors.primary : '#d3d3d3' }]} // Cambia el color del botón según si está habilitado
+            onPress={handleFacturaTarjetaPress}
+            disabled={!isButtonEnabled} // Desactiva el botón si no está habilitado
+          >
             <Text style={styles.addButtonText}>Confirmar Pago</Text>
           </TouchableOpacity>
         </View>
@@ -96,7 +123,7 @@ const DatosTarjetaScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#f8fafc',
   },
   scrollContainer: {
     flexGrow: 1,

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
-import { ArrowLeftIcon, TrashIcon  } from 'react-native-heroicons/outline';
+import { ArrowLeftIcon, TrashIcon } from 'react-native-heroicons/outline';
 import { CartContext } from '../context/CartContext'; // Importar el contexto
 
 const CartScreen = () => {
@@ -38,11 +38,11 @@ const CartScreen = () => {
   };
 
   const renderItem = ({ item, index }) => (
-    <CartItem 
-      item={item} 
+    <CartItem
+      item={item}
       handleIncrement={() => handleIncrement(index)}
       handleDecrement={() => handleDecrement(index)}
-      handleRemoveItem={() => handleRemoveItem(index)} 
+      handleRemoveItem={() => handleRemoveItem(index)}
     />
   );
 
@@ -61,7 +61,7 @@ const CartScreen = () => {
         keyExtractor={(item, index) => index.toString()}
       />
 
-      <CartTotal total={total} />
+      <CartTotal total={total} cart={cart} />
     </View>
   );
 };
@@ -86,15 +86,17 @@ const CartItem = ({ item, handleIncrement, handleDecrement, handleRemoveItem }) 
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={styles.deleteButton} onPress={handleRemoveItem}>
-        <TrashIcon style={styles.deleteButton} color={themeColors.text} size={16}/>
+        <TrashIcon style={styles.deleteButton} color={themeColors.text} size={16} />
 
       </TouchableOpacity>
     </View>
   );
 };
 
-const CartTotal = ({ total }) => {
+const CartTotal = ({ total, cart }) => {
   const navigation = useNavigation();
+
+  const isDisabled = cart.length === 0;
 
   const handlePagoPress = () => {
     navigation.navigate('Pago');
@@ -106,7 +108,11 @@ const CartTotal = ({ total }) => {
         <Text style={styles.subtotalText}>Total a pagar</Text>
         <Text style={styles.subtotalAmount}>${total.toFixed(2)}</Text>
       </View>
-      <TouchableOpacity style={styles.checkoutButton} onPress={handlePagoPress}>
+      <TouchableOpacity
+        style={[styles.checkoutButton, isDisabled && styles.checkoutButtonDisabled]}  // Cambiar el estilo basado en `isDisabled`
+        onPress={handlePagoPress}
+        disabled={isDisabled}  // Desactivar el botón si `isDisabled` es true
+      >
         <Text style={styles.checkoutButtonText}>Realizar Pedido</Text>
       </TouchableOpacity>
     </View>
@@ -236,6 +242,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 12,
+  },
+  checkoutButtonDisabled: {
+    backgroundColor: '#d3d3d3',  // Color gris para el botón desactivado
   },
   checkoutButtonText: {
     color: themeColors.onPrimary,

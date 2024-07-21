@@ -1,22 +1,42 @@
-// screens/DatosClScreen.js
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal } from 'react-native';
 import { ArrowLeftIcon, DocumentIcon, DocumentTextIcon, IdentificationIcon, UserIcon, EnvelopeIcon, HomeIcon, DevicePhoneMobileIcon } from 'react-native-heroicons/outline';
 import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
 import { ConsumerContext } from '../context/ConsumerContext';
 
+const VALID_PROVINCE_CODES = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24'];
+
 const DatosClScreen = () => {
   const navigation = useNavigation();
   const { clientData, setClientData } = useContext(ConsumerContext);
+
+  const [selectedOption, setSelectedOption] = useState('Invoice');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [isFormComplete, setIsFormComplete] = useState(false);
+  const [cedulaError, setCedulaError] = useState('');
+
+  useEffect(() => {
+    checkFormCompletion();
+  }, [clientData, termsAccepted, selectedOption]);
 
   const handleBackPress = () => {
     navigation.navigate('Pago');
   };
 
-  const [selectedOption, setSelectedOption] = useState('Invoice');
-  const [modalVisible, setModalVisible] = useState(false);
-  const [termsAccepted, setTermsAccepted] = useState(false);
+  const checkFormCompletion = () => {
+    if (selectedOption === 'Final Consumer') {
+      // No se requiere validación de formulario para "Consumidor Final"
+      setIsFormComplete(termsAccepted);
+    } else {
+      // Validación estricta para "Invoice"
+      const { cedula, nombre, correo, domicilio, telefono } = clientData;
+      const allFieldsFilled = cedula && nombre && correo && domicilio && telefono;
+      const isCedulaValid = cedulaError === '';
+      setIsFormComplete(allFieldsFilled && isCedulaValid && termsAccepted);
+    }
+  };
 
   const handleAcceptTerms = () => {
     setTermsAccepted(true);
@@ -28,6 +48,22 @@ const DatosClScreen = () => {
       navigation.navigate('FacturaConsumerData');
     } else if (selectedOption === 'Final Consumer') {
       navigation.navigate('FacturaConsumerFinal');
+    }
+  };
+
+  const validateCedula = (text) => {
+    // Limit input length to 10 characters
+    if (text.length <= 10) {
+      setClientData({ ...clientData, cedula: text });
+
+      // Validate length and prefix
+      if (text.length > 10) {
+        setCedulaError('El número de cédula no debe tener más de 10 dígitos.');
+      } else if (text.length > 0 && !VALID_PROVINCE_CODES.includes(text.substring(0, 2))) {
+        setCedulaError('El número de cédula debe comenzar con un código de provincia válido.');
+      } else {
+        setCedulaError('');
+      }
     }
   };
 
@@ -73,17 +109,19 @@ const DatosClScreen = () => {
               style={styles.input}
               placeholder="Numero de cedula"
               keyboardType="numeric"
-              value={clientData.cedula} // Corregido aquí
-              onChangeText={(text) => setClientData({ ...clientData, cedula: text })} // Corregido aquí
+              maxLength={10}
+              value={clientData.cedula}
+              onChangeText={validateCedula}
             />
           </View>
+          {cedulaError ? <Text style={styles.errorText}>{cedulaError}</Text> : null}
           <View style={styles.inputContainer}>
             <UserIcon name="user" size={20} color={themeColors.text} style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder="Nombre y apellido"
-              value={clientData.nombre} // Corregido aquí
-              onChangeText={(text) => setClientData({ ...clientData, nombre: text })} // Corregido aquí
+              value={clientData.nombre}
+              onChangeText={(text) => setClientData({ ...clientData, nombre: text })}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -91,8 +129,8 @@ const DatosClScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="Correo"
-              value={clientData.correo} // Corregido aquí
-              onChangeText={(text) => setClientData({ ...clientData, correo: text })} // Corregido aquí
+              value={clientData.correo}
+              onChangeText={(text) => setClientData({ ...clientData, correo: text })}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -100,8 +138,8 @@ const DatosClScreen = () => {
             <TextInput
               style={styles.input}
               placeholder="Domicilio"
-              value={clientData.domicilio} // Corregido aquí
-              onChangeText={(text) => setClientData({ ...clientData, domicilio: text })} // Corregido aquí
+              value={clientData.domicilio}
+              onChangeText={(text) => setClientData({ ...clientData, domicilio: text })}
             />
           </View>
           <View style={styles.inputContainer}>
@@ -110,8 +148,8 @@ const DatosClScreen = () => {
               style={styles.input}
               placeholder="Numero Telefonico"
               keyboardType="numeric"
-              value={clientData.telefono} // Corregido aquí
-              onChangeText={(text) => setClientData({ ...clientData, telefono: text })} // Corregido aquí
+              value={clientData.telefono}
+              onChangeText={(text) => setClientData({ ...clientData, telefono: text })}
             />
           </View>
         </>
@@ -125,8 +163,8 @@ const DatosClScreen = () => {
           <Text style={styles.buttonTextSecondary}>Aceptar términos y condiciones</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.buttonPrimary, { opacity: termsAccepted ? 1 : 0.5 }]}
-          disabled={!termsAccepted}
+          style={[styles.buttonPrimary, { opacity: termsAccepted && isFormComplete ? 1 : 0.5 }]}
+          disabled={!termsAccepted || !isFormComplete}
           onPress={handleGenerateComprobantePress}
         >
           <Text style={styles.buttonTextPrimary}>Generar Comprobante</Text>
@@ -147,7 +185,7 @@ const DatosClScreen = () => {
                 <Text style={styles.modalSubtitle}>1. Recopilación de Datos Personales</Text>
                 {'\n'}Al completar nuestro formulario, recopilaremos los siguientes datos personales:{'\n'}
                 - Número de cédula{'\n'}
-                - Nombre y apellido{'\n'}
+                ePresbre y apellido{'\n'}
                 - Correo electrónico{'\n'}
                 - Domicilio{'\n'}
                 - Número telefónico{'\n'}
