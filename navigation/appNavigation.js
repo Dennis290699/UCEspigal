@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CartProvider } from '../context/CartContext';
+import { ConsumerProvider } from '../context/ConsumerContext';
+import { ConsumerCardProvider } from '../context/ConsumerCardContext';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import HomeScreen from '../screens/HomeScreen';
 import AboutUsScreen from '../screens/AboutUsScreen';
@@ -12,9 +14,10 @@ import MetodoPagoScreen from '../screens/MetodoPagoScreen';
 import DatosClScreen from '../screens/DatosClScreen';
 import DatosTarjetaScreen from '../screens/DatosTarjetaScreen';
 import FacturaScreen from '../screens/FacturaScreen';
+import FacturaConsumerFinalScreen from '../screens/FacturaConsumerFinalScreen';
 import FacturaTarjetaScreen from '../screens/FacturaTarjetaScreen';
 
-import { Dimensions, Platform, Text, View } from 'react-native';
+import { Platform, View } from 'react-native';
 import { themeColors } from '../theme';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { HomeIcon as HomeOutline, HeartIcon as HeartOutline, ShoppingBagIcon as BagOutline, UserGroupIcon as UserGroup } from 'react-native-heroicons/outline';
@@ -27,26 +30,30 @@ const ios = Platform.OS === 'ios';
 export default function AppNavigation() {
   return (
     <CartProvider>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
-          <Stack.Screen name="Home" component={HomeTabs} />
-          <Stack.Screen name="Settings" component={SettingsScreen} />
-          <Stack.Screen name="Product" component={ProductScreen} />
-          <Stack.Screen name="Cart" component={CartScreen} />
-          <Stack.Screen name="Pago" component={MetodoPagoScreen} />
-          <Stack.Screen name="DatosCliente" component={DatosClScreen} />
-          <Stack.Screen name="DatosTarjeta" component={DatosTarjetaScreen} />
-          <Stack.Screen name="Factura" component={FacturaScreen} />
-          <Stack.Screen name="Facturatarjeta" component={FacturaTarjetaScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ConsumerProvider>
+        <ConsumerCardProvider>
+          <NavigationContainer>
+            <Stack.Navigator screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="Welcome" component={WelcomeScreen} />
+              <Stack.Screen name="Home" component={HomeTabs} />
+              <Stack.Screen name="Settings" component={SettingsScreen} />
+              <Stack.Screen name="Product" component={ProductScreen} />
+              <Stack.Screen name="Cart" component={CartScreen} />
+              <Stack.Screen name="Pago" component={MetodoPagoScreen} />
+              <Stack.Screen name="DatosCliente" component={DatosClScreen} />
+              <Stack.Screen name="DatosTarjeta" component={DatosTarjetaScreen} />
+              <Stack.Screen name="FacturaConsumerData" component={FacturaScreen} />
+              <Stack.Screen name="FacturaConsumerFinal" component={FacturaConsumerFinalScreen} />
+              <Stack.Screen name="Facturatarjeta" component={FacturaTarjetaScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ConsumerCardProvider>
+      </ConsumerProvider>
     </CartProvider>
   );
 }
 
 function HomeTabs() {
-  
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

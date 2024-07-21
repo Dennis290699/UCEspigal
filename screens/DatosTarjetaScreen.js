@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { themeColors } from '../theme'; // Importa los colores de tu tema
 import { ArrowLeftIcon, CreditCardIcon, CalendarDaysIcon, LockClosedIcon, UserCircleIcon } from 'react-native-heroicons/outline';
+import { ConsumerCardContext } from '../context/ConsumerCardContext'; // Importa el contexto
 
 const DatosTarjetaScreen = () => {
   const navigation = useNavigation();
+  const { cardData, setCardData } = useContext(ConsumerCardContext);
 
   const handleBackPress = () => {
     navigation.navigate('Pago');
@@ -18,21 +20,23 @@ const DatosTarjetaScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.header}>
-        <TouchableOpacity style={styles.iconContainer} onPress={handleBackPress}>
-          <ArrowLeftIcon style={styles.homeIcon} size={27} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Datos cliente</Text>
-      </View>
+        <View style={styles.header}>
+          <TouchableOpacity style={styles.iconContainer} onPress={handleBackPress}>
+            <ArrowLeftIcon style={styles.homeIcon} size={27} color="black" />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Datos tarjeta</Text>
+        </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Credit or Debit Card</Text>
+          <Text style={styles.label}>Tarjeta de Crédito o Débito</Text>
           <View style={styles.inputWrapper}>
             <CreditCardIcon name="credit-card" size={20} color="#A18249" style={styles.icon} />
             <TextInput
-              placeholder="Card number"
+              placeholder="Número de tarjeta"
               style={styles.input}
               keyboardType="numeric"
+              value={cardData.cardNumber}
+              onChangeText={(text) => setCardData({ ...cardData, cardNumber: text })}
             />
           </View>
         </View>
@@ -46,6 +50,8 @@ const DatosTarjetaScreen = () => {
                 placeholder="MM/YY"
                 style={styles.input}
                 keyboardType="numeric"
+                value={cardData.expirationDate}
+                onChangeText={(text) => setCardData({ ...cardData, expirationDate: text })}
               />
             </View>
           </View>
@@ -57,18 +63,22 @@ const DatosTarjetaScreen = () => {
                 placeholder="CVC"
                 style={styles.input}
                 keyboardType="numeric"
+                value={cardData.cvc}
+                onChangeText={(text) => setCardData({ ...cardData, cvc: text })}
               />
             </View>
           </View>
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.label}>Name on card</Text>
+          <Text style={styles.label}>Nombre en la tarjeta</Text>
           <View style={styles.inputWrapper}>
             <UserCircleIcon name="user" size={20} color="#A18249" style={styles.icon} />
             <TextInput
-              placeholder="Name on card"
+              placeholder="Nombre en la tarjeta"
               style={styles.input}
+              value={cardData.cardHolderName}
+              onChangeText={(text) => setCardData({ ...cardData, cardHolderName: text })}
             />
           </View>
         </View>

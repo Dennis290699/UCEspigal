@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+// screens/DatosClScreen.js
+import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal } from 'react-native';
 import { ArrowLeftIcon, DocumentIcon, DocumentTextIcon, IdentificationIcon, UserIcon, EnvelopeIcon, HomeIcon, DevicePhoneMobileIcon } from 'react-native-heroicons/outline';
-import { themeColors } from '../theme'; // Importa los colores de tu tema
+import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
+import { ConsumerContext } from '../context/ConsumerContext';
 
 const DatosClScreen = () => {
   const navigation = useNavigation();
+  const { clientData, setClientData } = useContext(ConsumerContext);
 
   const handleBackPress = () => {
     navigation.navigate('Pago');
-  };
-
-  const handleFacturePress = () => {
-    navigation.navigate('Factura');
   };
 
   const [selectedOption, setSelectedOption] = useState('Invoice');
@@ -22,6 +21,14 @@ const DatosClScreen = () => {
   const handleAcceptTerms = () => {
     setTermsAccepted(true);
     setModalVisible(false);
+  };
+
+  const handleGenerateComprobantePress = () => {
+    if (selectedOption === 'Invoice') {
+      navigation.navigate('FacturaConsumerData');
+    } else if (selectedOption === 'Final Consumer') {
+      navigation.navigate('FacturaConsumerFinal');
+    }
   };
 
   return (
@@ -62,23 +69,50 @@ const DatosClScreen = () => {
         <>
           <View style={styles.inputContainer}>
             <IdentificationIcon name="id-card" size={20} color={themeColors.text} style={styles.icon} />
-            <TextInput style={styles.input} placeholder="Numero de cedula" />
+            <TextInput
+              style={styles.input}
+              placeholder="Numero de cedula"
+              keyboardType="numeric"
+              value={clientData.cedula} // Corregido aquí
+              onChangeText={(text) => setClientData({ ...clientData, cedula: text })} // Corregido aquí
+            />
           </View>
           <View style={styles.inputContainer}>
             <UserIcon name="user" size={20} color={themeColors.text} style={styles.icon} />
-            <TextInput style={styles.input} placeholder="Nombre y apellido" />
+            <TextInput
+              style={styles.input}
+              placeholder="Nombre y apellido"
+              value={clientData.nombre} // Corregido aquí
+              onChangeText={(text) => setClientData({ ...clientData, nombre: text })} // Corregido aquí
+            />
           </View>
           <View style={styles.inputContainer}>
             <EnvelopeIcon name="envelope" size={20} color={themeColors.text} style={styles.icon} />
-            <TextInput style={styles.input} placeholder="Correo" />
+            <TextInput
+              style={styles.input}
+              placeholder="Correo"
+              value={clientData.correo} // Corregido aquí
+              onChangeText={(text) => setClientData({ ...clientData, correo: text })} // Corregido aquí
+            />
           </View>
           <View style={styles.inputContainer}>
             <HomeIcon name="home" size={20} color={themeColors.text} style={styles.icon} />
-            <TextInput style={styles.input} placeholder="Domicilio" />
+            <TextInput
+              style={styles.input}
+              placeholder="Domicilio"
+              value={clientData.domicilio} // Corregido aquí
+              onChangeText={(text) => setClientData({ ...clientData, domicilio: text })} // Corregido aquí
+            />
           </View>
           <View style={styles.inputContainer}>
             <DevicePhoneMobileIcon name="phone" size={20} color={themeColors.text} style={styles.icon} />
-            <TextInput style={styles.input} placeholder="Numero Telefonico" />
+            <TextInput
+              style={styles.input}
+              placeholder="Numero Telefonico"
+              keyboardType="numeric"
+              value={clientData.telefono} // Corregido aquí
+              onChangeText={(text) => setClientData({ ...clientData, telefono: text })} // Corregido aquí
+            />
           </View>
         </>
       )}
@@ -92,7 +126,8 @@ const DatosClScreen = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.buttonPrimary, { opacity: termsAccepted ? 1 : 0.5 }]}
-          disabled={!termsAccepted} onPress={handleFacturePress}
+          disabled={!termsAccepted}
+          onPress={handleGenerateComprobantePress}
         >
           <Text style={styles.buttonTextPrimary}>Generar Comprobante</Text>
         </TouchableOpacity>
@@ -134,19 +169,14 @@ const DatosClScreen = () => {
                 {'\n'}
                 <Text style={styles.modalSubtitle}>6. Cambios en los Términos</Text>
                 {'\n'}Podemos actualizar estos términos y condiciones de vez en cuando. Te notificaremos sobre cualquier cambio importante a través de nuestro sitio web o por correo electrónico.{'\n'}
-                {'\n'}
-                <Text style={styles.modalSubtitle}>7. Contacto</Text>
-                {'\n'}Si tienes alguna pregunta sobre nuestros términos y condiciones, por favor contáctanos a través de:{'\n'}
-                - Correo electrónico: tu-correo@ejemplo.com{'\n'}
-                - Teléfono: Tu número de teléfono{'\n'}
+                {'\n'}Al aceptar estos términos y condiciones, consientes el uso de tus datos personales de acuerdo con lo descrito anteriormente.{'\n'}
               </Text>
             </ScrollView>
-            <TouchableOpacity
-              style={styles.modalButton}
-              onPress={handleAcceptTerms}
-            >
-              <Text style={styles.modalButtonText}>Aceptar Condiciones</Text>
-            </TouchableOpacity>
+            <View style={styles.modalButtonContainer}>
+              <TouchableOpacity style={styles.modalButton} onPress={handleAcceptTerms}>
+                <Text style={styles.modalButtonText}>Aceptar</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>

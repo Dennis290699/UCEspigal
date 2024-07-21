@@ -1,13 +1,21 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { CartContext } from '../context/CartContext'; // Asegúrate de importar el contexto
+import { CartContext } from '../context/CartContext';
+import { ConsumerCardContext } from '../context/ConsumerCardContext';
 import { themeColors } from '../theme'; // Importa los colores de tu tema
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 
-const FacturaScreen = () => {
+const FacturaTarjetaScreen = () => {
   const navigation = useNavigation();
-  const { cart, clientData } = useContext(CartContext); // Obtener datos del carrito y cliente del contexto
+  const { cart, resetCart } = useContext(CartContext);
+  const { cardData, resetCardData } = useContext(ConsumerCardContext); // Obtener datos del carrito y cliente del contexto
+
+  const handleExitPress = () => {
+    resetCart();
+    resetCardData();
+    navigation.navigate('Home');
+  };
 
   // Calcula el total del carrito
   const calculateTotal = () => {
@@ -26,6 +34,8 @@ const FacturaScreen = () => {
       </View>
     ));
   };
+
+  const currentDate = new Date().toLocaleDateString();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,7 +64,7 @@ const FacturaScreen = () => {
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Fecha: </Text>
-            <Text style={styles.detailValue}>22/07/22</Text>
+            <Text style={styles.detailValue}>{currentDate}</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Direccion: </Text>
@@ -66,11 +76,11 @@ const FacturaScreen = () => {
         <View style={styles.detailSection}>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Número de Tarjeta: </Text>
-            <Text style={styles.detailValue}>{clientData?.cedula || 'N/A'}</Text>
+            <Text style={styles.detailValue}>{cardData.cardNumber}</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Nombre del titular: </Text>
-            <Text style={styles.detailValue}>{clientData?.nombre || 'N/A'} {clientData?.apellido || 'N/A'}</Text>
+            <Text style={styles.detailValue}>{cardData.cardHolderName}</Text>
           </View>
         </View>
 
@@ -103,7 +113,7 @@ const FacturaScreen = () => {
           <TouchableOpacity style={styles.payButton}>
             <Text style={styles.payButtonText}>Imprimir</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.viewButton}>
+          <TouchableOpacity style={styles.viewButton} onPress={handleExitPress}>
             <Text style={styles.viewButtonText}>Salir</Text>
           </TouchableOpacity>
         </View>
@@ -261,4 +271,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FacturaScreen;
+export default FacturaTarjetaScreen;

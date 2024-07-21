@@ -1,26 +1,25 @@
 import React, { useContext } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { CartContext } from '../context/CartContext';
-import { ConsumerContext } from '../context/ConsumerContext'; // Importa el contexto del cliente
-import { themeColors } from '../theme';
+import { CartContext } from '../context/CartContext'; // Asegúrate de importar el contexto
+import { themeColors } from '../theme'; // Importa los colores de tu tema
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 
-const FacturaScreen = () => {
+const FacturaConsumerFinalScreen = () => {
   const navigation = useNavigation();
-  const { cart, resetCart } = useContext(CartContext);
-  const { clientData, resetClientData } = useContext(ConsumerContext); // Usa el contexto del cliente
+  const { cart, resetCart } = useContext(CartContext); // Obtener datos del carrito y cliente del contexto
 
   const handleExitPress = () => {
     resetCart();
-    resetClientData();
     navigation.navigate('Home');
   };
 
+  // Calcula el total del carrito
   const calculateTotal = () => {
     return cart.reduce((acc, item) => acc + item.price * item.count, 0);
   };
 
+  // Renderiza los productos en la factura
   const renderCartItems = () => {
     return cart.map((item, index) => (
       <View style={styles.productRow} key={index}>
@@ -39,8 +38,8 @@ const FacturaScreen = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
-          <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon style={styles.homeIcon} size={27} color="black" />
+          <TouchableOpacity style={styles.iconContainer}>
+            {/* <ArrowLeftIcon style={styles.homeIcon} size={27} color="black" /> */}
           </TouchableOpacity>
           <Text style={styles.headerText}>Comprobante</Text>
         </View>
@@ -74,23 +73,23 @@ const FacturaScreen = () => {
         <View style={styles.detailSection}>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Número de Cédula: </Text>
-            <Text style={styles.detailValue}>{clientData.cedula}</Text>
+            <Text style={styles.detailValue}>Consumidor Final</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Nombre y Apellido: </Text>
-            <Text style={styles.detailValue}>{clientData.nombre} {clientData.apellido}</Text>
+            <Text style={styles.detailValue}>Consumidor Final</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Correo: </Text>
-            <Text style={styles.detailValue}>{clientData.correo}</Text>
+            <Text style={styles.detailValue}>Consumidor Final</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Domicilio: </Text>
-            <Text style={styles.detailValue}>{clientData.domicilio}</Text>
+            <Text style={styles.detailValue}>Consumidor Final</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Número de Teléfono: </Text>
-            <Text style={styles.detailValue}>{clientData.telefono}</Text>
+            <Text style={styles.detailValue}>Consumidor Final</Text>
           </View>
         </View>
 
@@ -281,4 +280,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FacturaScreen;
+export default FacturaConsumerFinalScreen;
