@@ -113,7 +113,7 @@ export default function ProductScreen({ route }) {
               <ShoppingBag size="30" color={cart.length > 0 ? "green" : "gray"} />
             </TouchableOpacity>
             <TouchableOpacity onPress={handleAddToCart} disabled={isAdded}
-              style={{backgroundColor: isAdded ? "gray" : themeColors.bgLight}} 
+              style={{backgroundColor: isAdded ? "gray" : themeColors.primary}} 
               className="p-4 rounded-full flex-1 ml-4">
               <Text className="text-center text-white text-base font-semibold">
                 {isAdded ? "Producto agregado" : "Agregar al carrito"}

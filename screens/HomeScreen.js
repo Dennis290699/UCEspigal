@@ -10,9 +10,10 @@ import { panDulceItems } from '../constants/panDulceItems';
 import { panTradicionalItems } from '../constants/panTradicionalItems';
 import { pastelItems } from '../constants/pastelItems';
 import { sandwichItems } from '../constants/sandwichItems';
+import { productosVariosItems } from '../constants/productosVarios';
 import Carousel from 'react-native-snap-carousel';
 import CoffeeCard from '../components/coffeeCard';
-import { QuestionMarkCircleIcon, MapPinIcon, Cog6ToothIcon  } from 'react-native-heroicons/outline';
+import { QuestionMarkCircleIcon, MapPinIcon, Cog6ToothIcon } from 'react-native-heroicons/outline';
 import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
@@ -55,6 +56,9 @@ export default function HomeScreen() {
         case 6:
           items = coffeeItems;
           break;
+        case 7:
+          items = productosVariosItems;
+          break;
         default:
           items = empanadaItems;
       }
@@ -64,7 +68,7 @@ export default function HomeScreen() {
       } else {
         setDisplayItems([]);
       }
-      
+
       setLoading(false);
     }, 500);
   };

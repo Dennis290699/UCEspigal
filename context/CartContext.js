@@ -6,7 +6,18 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (item) => {
-    setCart([...cart, item]);
+    // Verificar si el producto ya está en el carrito
+    const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+
+    if (existingItemIndex !== -1) {
+      // Si el producto ya está en el carrito, actualizar la cantidad
+      const updatedCart = [...cart];
+      updatedCart[existingItemIndex].count += item.count;
+      setCart(updatedCart);
+    } else {
+      // Si el producto no está en el carrito, agregarlo
+      setCart([...cart, item]);
+    }
   };
 
   const removeFromCart = (index) => {

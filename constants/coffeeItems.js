@@ -1,47 +1,46 @@
 export const coffeeItems = [
-    {
-      id: 1,
-      name: 'Black Coffee',
-      price: '25.50',
-      stars: '4.6',
-      image: require('../assets/images/productos/coffee/coffee1.png'),
-      desc: 'The taste of coffee can vary depending on factors such as the type of beans, roast level, brewing method, and the addition of any flavors or sweeteners.'
-    },
-  
-    {
-      id: 2,
-      name: 'Cappuccino',
-      price: '15.50',
-      stars: '4.3',
-      image: require('../assets/images/productos/coffee/coffee2.png'),
-      desc: 'The taste of coffee can vary depending on factors such as the type of beans, roast level, brewing method, and the addition of any flavors or sweeteners.'
-    },
-  
-    {
-      id: 3,
-      name: 'Espresso',
-      price: '30.00',
-      stars: '4.0',
-      image: require('../assets/images/productos/coffee/coffee3.png'),
-      desc: 'The taste of coffee can vary depending on factors such as the type of beans, roast level, brewing method, and the addition of any flavors or sweeteners.'
-    },
-  
-    {
-      id: 4,
-      name: 'Latte',
-      price: '10.30',
-      stars: '3.5',
-      image: require('../assets/images/productos/coffee/coffee4.png'),
-      desc: 'The taste of coffee can vary depending on factors such as the type of beans, roast level, brewing method, and the addition of any flavors or sweeteners.'
-    },
-  
-    {
-      id: 5,
-      name: 'Mocha',
-      price: '23.10',
-      stars: '4.7',
-      image: require('../assets/images/productos/coffee/coffee5.png'),
-      desc: 'The taste of coffee can vary depending on factors such as the type of beans, roast level, brewing method, and the addition of any flavors or sweeteners.'
-    },
-  
-  ];
+  {
+    id: 1,
+    name: 'Café Negro',
+    price: '2.50',
+    stars: '4.6',
+    image: require('../assets/images/productos/coffee/coffee1.png'),
+    desc: 'Disfruta del clásico y robusto sabor del Café Negro, elaborado con granos seleccionados y tostados a la perfección. Perfecto para comenzar tu día con energía.'
+  },
+
+  {
+    id: 2,
+    name: 'Cappuccino',
+    price: '3.50',
+    stars: '4.3',
+    image: require('../assets/images/productos/coffee/coffee2.png'),
+    desc: 'Deléitate con nuestro Cappuccino, una combinación perfecta de espresso, leche espumosa y un toque de cacao. Ideal para una pausa deliciosa en cualquier momento del día.'
+  },
+
+  {
+    id: 3,
+    name: 'Espresso',
+    price: '2.80',
+    stars: '4.0',
+    image: require('../assets/images/productos/coffee/coffee3.png'),
+    desc: 'Saborea la intensidad de un auténtico Espresso, con su rica crema y profundo aroma. Una explosión de sabor en cada sorbo para los verdaderos amantes del café.'
+  },
+
+  {
+    id: 4,
+    name: 'Latte',
+    price: '3.00',
+    stars: '3.5',
+    image: require('../assets/images/productos/coffee/coffee4.png'),
+    desc: 'Prueba nuestro suave y cremoso Latte, una mezcla equilibrada de espresso y leche vaporizada, perfecta para esos momentos de tranquilidad y relajación.'
+  },
+
+  {
+    id: 5,
+    name: 'Mocha',
+    price: '3.75',
+    stars: '4.7',
+    image: require('../assets/images/productos/coffee/coffee5.png'),
+    desc: 'Descubre el irresistible sabor de nuestro Mocha, donde el chocolate y el café se encuentran en una deliciosa armonía. Un capricho perfecto para los amantes del dulce.'
+  },
+];

@@ -4,5 +4,6 @@ export const categories = [
   { id: 3, title: "Pan Tradicional" },
   { id: 4, title: "Pasteles" },
   { id: 5, title: "Sanduches" },
-  { id: 6, title: "Cafeteria" }
+  { id: 6, title: "Cafeteria" },
+  { id: 7, title: "Varios" }
 ];

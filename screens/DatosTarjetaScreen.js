@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { themeColors } from '../theme'; // Importa los colores de tu tema
+import { themeColors } from '../theme';
 import { ArrowLeftIcon, CreditCardIcon, CalendarDaysIcon, LockClosedIcon, UserCircleIcon } from 'react-native-heroicons/outline';
-import { ConsumerCardContext } from '../context/ConsumerCardContext'; // Importa el contexto
+import { ConsumerCardContext } from '../context/ConsumerCardContext';
 
 const DatosTarjetaScreen = () => {
   const navigation = useNavigation();
   const { cardData, setCardData } = useContext(ConsumerCardContext);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+  const [isGeneratingInvoice, setIsGeneratingInvoice] = useState(false);
 
   useEffect(() => {
     // Verifica si todos los campos están llenos
@@ -22,7 +23,11 @@ const DatosTarjetaScreen = () => {
   };
 
   const handleFacturaTarjetaPress = () => {
-    navigation.navigate('Facturatarjeta');
+    setIsGeneratingInvoice(true);
+    setTimeout(() => {
+      setIsGeneratingInvoice(false);
+      navigation.navigate('Facturatarjeta');
+    }, 3000);
   };
 
   // Función para formatear el texto en el campo MM/YY
@@ -115,6 +120,17 @@ const DatosTarjetaScreen = () => {
             <Text style={styles.addButtonText}>Confirmar Pago</Text>
           </TouchableOpacity>
         </View>
+
+        <Modal
+          visible={isGeneratingInvoice}
+          transparent={true}
+          animationType="fade"
+        >
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={themeColors.primary} />
+            <Text style={styles.loadingText}>Generando Comprobante...</Text>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
@@ -203,6 +219,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#FFFFFF',
     fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: 'white',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 16,
   },
 });
 

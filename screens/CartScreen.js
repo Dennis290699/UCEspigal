@@ -59,8 +59,8 @@ const CartScreen = () => {
         data={cart}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={styles.listContent}
       />
-
       <CartTotal total={total} cart={cart} />
     </View>
   );
@@ -87,7 +87,6 @@ const CartItem = ({ item, handleIncrement, handleDecrement, handleRemoveItem }) 
       </View>
       <TouchableOpacity style={styles.deleteButton} onPress={handleRemoveItem}>
         <TrashIcon style={styles.deleteButton} color={themeColors.text} size={16} />
-
       </TouchableOpacity>
     </View>
   );
@@ -121,7 +120,7 @@ const CartTotal = ({ total, cart }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,  // Usa flex 1 para que el FlatList ocupe todo el espacio disponible
     backgroundColor: '#f8fafc',
     padding: 20,
   },
@@ -230,12 +229,10 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   checkoutButtonContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingBottom: 20,  // Añadir padding para el botón
   },
   checkoutButton: {
-    width: '80%',
+    width: '100%',
     paddingVertical: 15,
     backgroundColor: themeColors.primary,
     borderRadius: 15,

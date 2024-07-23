@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Modal, ActivityIndicator } from 'react-native';
 import { ArrowLeftIcon, DocumentIcon, DocumentTextIcon, IdentificationIcon, UserIcon, EnvelopeIcon, HomeIcon, DevicePhoneMobileIcon } from 'react-native-heroicons/outline';
 import { themeColors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
@@ -10,9 +10,9 @@ const VALID_PROVINCE_CODES = ['01', '02', '03', '04', '05', '06', '07', '08', '0
 const DatosClScreen = () => {
   const navigation = useNavigation();
   const { clientData, setClientData } = useContext(ConsumerContext);
-
   const [selectedOption, setSelectedOption] = useState('Invoice');
   const [modalVisible, setModalVisible] = useState(false);
+  const [isGeneratingInvoice, setIsGeneratingInvoice] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isFormComplete, setIsFormComplete] = useState(false);
   const [cedulaError, setCedulaError] = useState('');
@@ -44,18 +44,21 @@ const DatosClScreen = () => {
   };
 
   const handleGenerateComprobantePress = () => {
-    if (selectedOption === 'Invoice') {
-      navigation.navigate('FacturaConsumerData');
-    } else if (selectedOption === 'Final Consumer') {
-      navigation.navigate('FacturaConsumerFinal');
-    }
+    setIsGeneratingInvoice(true);
+    setTimeout(() => {
+      setIsGeneratingInvoice(false);
+      if (selectedOption === 'Invoice') {
+        navigation.navigate('FacturaConsumerData');
+      } else if (selectedOption === 'Final Consumer') {
+        navigation.navigate('FacturaConsumerFinal');
+      }
+    }, 3000); // Simulate a 3-second delay for invoice generation
   };
 
   const validateCedula = (text) => {
     // Limit input length to 10 characters
     if (text.length <= 10) {
       setClientData({ ...clientData, cedula: text });
-
       // Validate length and prefix
       if (text.length > 10) {
         setCedulaError('El número de cédula no debe tener más de 10 dígitos.');
@@ -218,6 +221,17 @@ const DatosClScreen = () => {
           </View>
         </View>
       </Modal>
+
+      <Modal
+        visible={isGeneratingInvoice}
+        transparent={true}
+        animationType="fade"
+      >
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={themeColors.primary} />
+          <Text style={styles.loadingText}>Generando Comprobante...</Text>
+        </View>
+      </Modal>
     </ScrollView>
   );
 };
@@ -369,6 +383,21 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: 'white',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 16,
   },
 });
 

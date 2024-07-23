@@ -1,19 +1,46 @@
-import React, { useContext } from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import React, { useContext, useState, useEffect } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, SafeAreaView, Modal, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { CartContext } from '../context/CartContext';
-import { ConsumerContext } from '../context/ConsumerContext'; // Importa el contexto del cliente
+import { ConsumerContext } from '../context/ConsumerContext';
+import { ConsumerCardContext } from '../context/ConsumerCardContext';
+import { empleados } from '../constants/empleados';
 import { themeColors } from '../theme';
 import { ArrowLeftIcon } from 'react-native-heroicons/outline';
 
 const FacturaScreen = () => {
   const navigation = useNavigation();
   const { cart, resetCart } = useContext(CartContext);
-  const { clientData, resetClientData } = useContext(ConsumerContext); // Usa el contexto del cliente
+  const { clientData, resetClientData } = useContext(ConsumerContext);
+  const { resetCardData } = useContext(ConsumerCardContext);
+  const [randomEmployee, setRandomEmployee] = useState({ name: '' });
+  const [comprobanteId, setComprobanteId] = useState('');
+  const [isGeneratingInvoice, setIsGeneratingInvoice] = useState(false);
 
-  const handleExitPress = () => {
+  useEffect(() => {
+    setRandomEmployee(getRandomEmployee());
+    setComprobanteId(generateUniqueId());
+  }, []);
+
+  const getRandomEmployee = () => {
+    const randomIndex = Math.floor(Math.random() * empleados.length);
+    return empleados[randomIndex];
+  };
+
+  const generateUniqueId = () => {
+    const date = new Date();
+    const timestamp = date.getTime(); // Obtiene el número de milisegundos desde el 1 de enero de 1970
+    const randomNum = Math.floor(Math.random() * 10000); // Genera un número aleatorio de 4 dígitos
+    return `C${timestamp}${randomNum}`; // Combina la fecha y el número aleatorio
+  };
+
+  const handleExitPress = async () => {
+    setIsGeneratingInvoice(true); // Muestra el modal de carga
+    await new Promise(resolve => setTimeout(resolve, 1000)); // Simula un retraso (opcional, para mostrar el modal de carga)
     resetCart();
     resetClientData();
+    resetCardData();
+    setIsGeneratingInvoice(false); // Oculta el modal de carga después de limpiar el carrito
     navigation.navigate('Home');
   };
 
@@ -40,7 +67,7 @@ const FacturaScreen = () => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.header}>
           <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.goBack()}>
-            <ArrowLeftIcon style={styles.homeIcon} size={27} color="black" />
+            {/* <ArrowLeftIcon style={styles.homeIcon} size={27} color="black" /> */}
           </TouchableOpacity>
           <Text style={styles.headerText}>Comprobante</Text>
         </View>
@@ -58,7 +85,7 @@ const FacturaScreen = () => {
         <View style={styles.detailSection}>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>ID Comprobante: </Text>
-            <Text style={styles.detailValue}>8DIU0K8DIU0K</Text>
+            <Text style={styles.detailValue}>{comprobanteId}</Text>
           </View>
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Fecha: </Text>
@@ -67,6 +94,10 @@ const FacturaScreen = () => {
           <View style={styles.detailRow}>
             <Text style={styles.detailLabel}>Direccion: </Text>
             <Text style={styles.detailValue}>UCE, Quito-Ecuador</Text>
+          </View>
+          <View style={styles.detailRow}>
+            <Text style={styles.detailLabel}>Atendido por: </Text>
+            <Text style={styles.detailValue}>{randomEmployee.name}</Text>
           </View>
         </View>
 
@@ -127,6 +158,17 @@ const FacturaScreen = () => {
             <Text style={styles.viewButtonText}>Salir</Text>
           </TouchableOpacity>
         </View>
+
+        <Modal
+          visible={isGeneratingInvoice}
+          transparent={true}
+          animationType="fade"
+        >
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color={themeColors.primary} />
+            <Text style={styles.loadingText}>Gracias por su compra</Text>
+          </View>
+        </Modal>
       </ScrollView>
     </SafeAreaView>
   );
@@ -278,6 +320,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#0e141b',
     fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.7)',
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: 'white',
+  },
+  errorText: {
+    color: 'red',
+    marginBottom: 16,
   },
 });
 
