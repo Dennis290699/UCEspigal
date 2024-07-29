@@ -1,6 +1,7 @@
 export const coffeeItems = [
   {
     id: 1,
+    code: 'COFFEE001',
     name: 'Café Negro',
     price: '2.50',
     stars: '4.6',
@@ -10,6 +11,7 @@ export const coffeeItems = [
 
   {
     id: 2,
+    code: 'COFFEE002',
     name: 'Cappuccino',
     price: '3.50',
     stars: '4.3',
@@ -19,6 +21,7 @@ export const coffeeItems = [
 
   {
     id: 3,
+    code: 'COFFEE003',
     name: 'Espresso',
     price: '2.80',
     stars: '4.0',
@@ -28,6 +31,7 @@ export const coffeeItems = [
 
   {
     id: 4,
+    code: 'COFFEE004',
     name: 'Latte',
     price: '3.00',
     stars: '3.5',
@@ -37,6 +41,7 @@ export const coffeeItems = [
 
   {
     id: 5,
+    code: 'COFFEE005',
     name: 'Mocha',
     price: '3.75',
     stars: '4.7',

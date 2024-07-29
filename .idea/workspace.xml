@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="835a3f95-f301-43c8-8fac-df575613afac" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/react-coffe.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eas.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/avatar.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/beansBackground1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/beansBackground2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/coffee.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/coffee1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/coffee2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/coffee3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/coffee4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/images/coffee5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/coffeeCard.js" beforeDir="false" afterPath="$PROJECT_DIR$/components/coffeeCard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigation/appNavigation.js" beforeDir="false" afterPath="$PROJECT_DIR$/navigation/appNavigation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/ProductScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ProductScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/theme/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/theme/index.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2jYtn5d8YC7gFQdvynOnXI0LtYg" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "RunOnceActivity.readMode.enableVisualFormatting": "true",
+    "ScreenshotViewer.SavePath": "D:/curso-React/screenshots",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/curso-React/screenshots",
+    "settings.editor.selected.configurable": "AndroidSdkUpdater"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="835a3f95-f301-43c8-8fac-df575613afac" name="Changes" comment="" />
+      <created>1721576001356</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1721576001356</updated>
+    </task>
+    <servers />
+  </component>
+</project>

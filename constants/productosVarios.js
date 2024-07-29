@@ -1,6 +1,7 @@
 export const productosVariosItems = [
   {
     id: 1,
+    code: 'VAR001',
     name: 'Leche',
     price: '1.00',
     stars: '4.7',
@@ -9,6 +10,7 @@ export const productosVariosItems = [
   },
   {
     id: 2,
+    code: 'VAR002',
     name: 'Mortadela',
     price: '1.50',
     stars: '4.5',
@@ -17,6 +19,7 @@ export const productosVariosItems = [
   },
   {
     id: 3,
+    code: 'VAR003',
     name: 'Jamón',
     price: '2.50',
     stars: '4.6',
@@ -25,6 +28,7 @@ export const productosVariosItems = [
   },
   {
     id: 4,
+    code: 'VAR004',
     name: 'Jugo de Naranja',
     price: '1.00',
     stars: '',
@@ -33,6 +37,7 @@ export const productosVariosItems = [
   },
   {
     id: 5,
+    code: 'VAR005',
     name: 'Jugo de Manzana',
     price: '1.20',
     stars: '4.7',
@@ -41,6 +46,7 @@ export const productosVariosItems = [
   },
   {
     id: 6,
+    code: 'VAR006',
     name: 'Queso',
     price: '3.00',
     stars: '4.8',
@@ -49,6 +55,7 @@ export const productosVariosItems = [
   },
   {
     id: 7,
+    code: 'VAR007',
     name: 'Yogurt',
     price: '1.90',
     stars: '4.6',
@@ -57,6 +64,7 @@ export const productosVariosItems = [
   },
   {
     id: 8,
+    code: 'VAR008',
     name: 'Mantequilla',
     price: '1.80',
     stars: '4.7',

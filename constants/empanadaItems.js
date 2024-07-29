@@ -1,6 +1,7 @@
 export const empanadaItems = [
   {
     id: 1,
+    code: 'EMP001',
     name: 'Empanada Integral',
     price: '0.40',
     stars: '4.5',
@@ -9,6 +10,7 @@ export const empanadaItems = [
   },
   {
     id: 2,
+    code: 'EMP002',
     name: 'Empanada de Queso',
     price: '0.35',
     stars: '4.7',

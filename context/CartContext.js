@@ -6,27 +6,30 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (item) => {
-    // Verificar si el producto ya está en el carrito
-    const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
-
-    if (existingItemIndex !== -1) {
-      // Si el producto ya está en el carrito, actualizar la cantidad
+    // Verifica si el artículo ya existe en el carrito por el código
+    const existingItemIndex = cart.findIndex(cartItem => cartItem.code === item.code);
+    
+    if (existingItemIndex > -1) {
+      // Actualiza la cantidad si el artículo ya existe en el carrito
       const updatedCart = [...cart];
-      updatedCart[existingItemIndex].count += item.count;
+      updatedCart[existingItemIndex].count = (updatedCart[existingItemIndex].count || 1) + 1;
       setCart(updatedCart);
     } else {
-      // Si el producto no está en el carrito, agregarlo
-      setCart([...cart, item]);
+      // Agrega el artículo al carrito si no existe
+      setCart([...cart, { ...item, count: 1 }]);
     }
   };
 
-  const removeFromCart = (index) => {
-    setCart(cart.filter((_, i) => i !== index));
+  const removeFromCart = (code) => {
+    // Elimina el artículo del carrito por el código
+    setCart(cart.filter(cartItem => cartItem.code !== code));
   };
 
-  const updateItemQuantity = (index, newCount) => {
-    const updatedCart = [...cart];
-    updatedCart[index].count = newCount;
+  const updateItemQuantity = (code, newCount) => {
+    // Actualiza la cantidad del artículo en el carrito por el código
+    const updatedCart = cart.map(cartItem => 
+      cartItem.code === code ? { ...cartItem, count: newCount } : cartItem
+    );
     setCart(updatedCart);
   };
 
