@@ -19,17 +19,19 @@ const CartScreen = () => {
     setTotal(total);
   };
 
-  const handleRemoveItem = (index) => {
-    removeFromCart(index);
+  const handleRemoveItem = (code) => {
+    removeFromCart(code);
   };
 
-  const handleIncrement = (index) => {
-    updateItemQuantity(index, cart[index].count + 1);
+  const handleIncrement = (code) => {
+    const item = cart.find(cartItem => cartItem.code === code);
+    updateItemQuantity(code, item.count + 1);
   };
 
-  const handleDecrement = (index) => {
-    if (cart[index].count > 1) {
-      updateItemQuantity(index, cart[index].count - 1);
+  const handleDecrement = (code) => {
+    const item = cart.find(cartItem => cartItem.code === code);
+    if (item.count > 1) {
+      updateItemQuantity(code, item.count - 1);
     }
   };
 
@@ -37,12 +39,12 @@ const CartScreen = () => {
     navigation.navigate('Home');
   };
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({ item }) => (
     <CartItem
       item={item}
-      handleIncrement={() => handleIncrement(index)}
-      handleDecrement={() => handleDecrement(index)}
-      handleRemoveItem={() => handleRemoveItem(index)}
+      handleIncrement={() => handleIncrement(item.code)}
+      handleDecrement={() => handleDecrement(item.code)}
+      handleRemoveItem={() => handleRemoveItem(item.code)}
     />
   );
 
