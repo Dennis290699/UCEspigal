@@ -7,13 +7,12 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (item) => {
     const existingItemIndex = cart.findIndex(cartItem => cartItem.code === item.code);
-    
-    if (existingItemIndex > -1) {
+    if (existingItemIndex >= 0) {
       const updatedCart = [...cart];
-      updatedCart[existingItemIndex].count += 1;
+      updatedCart[existingItemIndex].count += item.count;
       setCart(updatedCart);
     } else {
-      setCart([...cart, { ...item, count: 1 }]);
+      setCart([...cart, item]);
     }
   };
 
@@ -28,8 +27,12 @@ export const CartProvider = ({ children }) => {
     setCart(updatedCart);
   };
 
+  const resetCart = () => {
+    setCart([]);
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateItemQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateItemQuantity, resetCart }}>
       {children}
     </CartContext.Provider>
   );
